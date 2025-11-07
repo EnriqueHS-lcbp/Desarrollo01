@@ -102,10 +102,10 @@ fun AsistenciaScreen(viewModel: AsistenciaViewModel = viewModel()) {
                     Spacer(Modifier.height(16.dp))
 
                     DropdownSelector(
-                        label = "Curso",
-                        options = uiState.cursos,
-                        selected = uiState.cursoSeleccionado,
-                        onSelected = viewModel::onCursoSelected
+                        label = "Carrera",
+                        options = uiState.carreras,
+                        selected = uiState.carreraSeleccionada,
+                        onSelected = viewModel::onCarreraSelected
                     )
 
                     Spacer(Modifier.height(8.dp))
