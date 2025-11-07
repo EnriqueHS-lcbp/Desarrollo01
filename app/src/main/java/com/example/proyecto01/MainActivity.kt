@@ -10,9 +10,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.proyecto01.data.remote.api.CarreraApi
+import com.example.proyecto01.data.repository.CarreraRepositoryImpl
+import com.example.proyecto01.domain.usecase.GetCarreraUseCase
 import com.example.proyecto01.presentation.asistencia.AsistenciaScreen
+import com.example.proyecto01.presentation.asistencia.AsistenciaViewModel
 import com.example.proyecto01.ui.theme.Proyecto01Theme
 
 class MainActivity : ComponentActivity() {
@@ -23,13 +30,23 @@ class MainActivity : ComponentActivity() {
             Proyecto01Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        AsistenciaScreen()
+                        val carreraApi = CarreraApi()
+                        val carreraRepository = CarreraRepositoryImpl(carreraApi)
+                        val getCarreraUseCase = GetCarreraUseCase(carreraRepository)
+                        val asistenciaViewModel = remember {
+                            AsistenciaViewModel(getCarreraUseCase)
+                        }
+
+                        AsistenciaScreen(viewModel = asistenciaViewModel)
+                    //AsistenciaScreen()
                     }
                 }
             }
         }
     }
 }
+
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {

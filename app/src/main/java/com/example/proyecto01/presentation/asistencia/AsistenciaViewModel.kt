@@ -1,5 +1,6 @@
 package com.example.proyecto01.presentation.asistencia
 
+import android.util.Log
 import com.example.proyecto01.domain.model.Asignatura
 
 
@@ -24,11 +25,14 @@ class AsistenciaViewModel (
     }
 
     private fun loadInitialData() {
+        Log.d("ViewModel","Entro a ViewModel")
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
-
+            Log.d("ViewModel","Entro a ViewModel antes de try-catch")
             try {
-                val carreras = getCarreraUseCase().map { it.servNombre }
+                Log.d("ViewModel","Entro a ViewModel en try")
+                val carreras = getCarreraUseCase(23197).map { it.servNombre }
+                Log.d("AsistenciaViewModel", "Carreras: $carreras")
                 val cursos = listOf("1° Primaria", "2° Primaria", "3° Primaria")
                 val periodos = listOf("2025-I", "2025-II", "2026-I")
                 val asignaturas = listOf(
@@ -42,16 +46,21 @@ class AsistenciaViewModel (
                     fotoUrl = "https://example.com/foto_alumno.jpg",
                     cursos = cursos,
                     cursoSeleccionado = cursos.first(),
+                    carreras = carreras,
+                    carreraSeleccionada = carreras.firstOrNull() ?: "",
                     periodos = periodos,
                     periodoSeleccionado = periodos.first(),
-                    asignaturas = asignaturas
+                    asignaturas = asignaturas,
+                    isLoading = false,
+                    error = null
                 )
             }catch (e: Exception) {
-            _uiState.value = _uiState.value.copy(
-                error = "Error al cargar carreras",
-                isLoading = false
-            )
-        }
+                Log.d("ViewModel","Entro a ViewModel en catch",e)
+                _uiState.value = _uiState.value.copy(
+                    error = "Error al cargar carreras",
+                    isLoading = false
+                )
+            }
         }
     }
 

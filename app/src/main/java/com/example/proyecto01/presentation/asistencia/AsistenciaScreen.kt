@@ -1,5 +1,6 @@
 package com.example.proyecto01.presentation.asistencia
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -47,9 +48,9 @@ import androidx.compose.material.icons.filled.List
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AsistenciaScreen(viewModel: AsistenciaViewModel = viewModel()) {
+fun AsistenciaScreen(viewModel: AsistenciaViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-
+    Log.d("AsistenciaScreen","Entro al screen")
     Scaffold { padding ->
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),

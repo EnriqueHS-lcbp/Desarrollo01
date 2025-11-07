@@ -25,5 +25,5 @@ data class CarreraDto(
 @Serializable
 data class CarreraResponseDto(
     @SerialName("flag_val") val flagVal: Int,
-    @SerialName("carrera") val carrera: List<CarreraDto>
+    @SerialName("carrera") val carrera: List<CarreraDto>?= null
 )
