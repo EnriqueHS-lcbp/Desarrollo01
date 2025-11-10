@@ -23,18 +23,11 @@ class CarreraApi {
         }
     }
 
-    /*suspend fun getCarreras(): CarreraResponseDto {
-        val response: HttpResponse = client.get("http://74.249.92.43:8080/saa-rest/webresources/intranetSAA/estudianteCarrera")
-        return response.body()
-    }*/
-
     suspend fun getCarreras(idEstud: Int): CarreraResponseDto {
         val requestBody = CarreraRequestDto(id_estud = idEstud)
-
         return client.post("http://74.249.92.43:8080/saa-rest/webresources/intranetSAA/estudianteCarrera") {
             contentType(ContentType.Application.Json)
             setBody(requestBody)
         }.body()
     }
-
 }

@@ -50,207 +50,126 @@ import androidx.compose.material.icons.filled.List
 @Composable
 fun AsistenciaScreen(viewModel: AsistenciaViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-    Log.d("AsistenciaScreen","Entro al screen")
+    Log.d("AsistenciaScreen", "Entro al screen")
+
     Scaffold { padding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            item(span = { GridItemSpan(2) }) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    // 🔵 Encabezado tipo bloque para "Asistencia"
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
-                    ) {
-                        if (uiState.fotoUrl.isNotBlank()) {
-                            Image(
-                                painter = rememberAsyncImagePainter(uiState.fotoUrl),
-                                contentDescription = "Foto del alumno",
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                                    .border(1.dp, Color.Gray, CircleShape)
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.AccountCircle,
-                                contentDescription = "Icono de usuario",
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                                    .border(1.dp, Color.Gray, CircleShape),
-                                tint = MaterialTheme.colorScheme.onPrimary
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (uiState.error != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = uiState.error ?: "Error desconocido")
+            }
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                item(span = { GridItemSpan(2) }) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        // 🔵 Encabezado tipo bloque para "Asistencia"
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.primary)
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            if (uiState.fotoUrl.isNotBlank()) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(uiState.fotoUrl),
+                                    contentDescription = "Foto del alumno",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                        .border(1.dp, Color.Gray, CircleShape)
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Default.AccountCircle,
+                                    contentDescription = "Icono de usuario",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                        .border(1.dp, Color.Gray, CircleShape),
+                                    tint = MaterialTheme.colorScheme.onPrimary
+                                )
+                            }
+
+                            Spacer(Modifier.width(12.dp))
+
+                            Text(
+                                text = "Asistencia",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
 
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.height(16.dp))
 
-                        Text(
-                            text = "Asistencia",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-
-                    Spacer(Modifier.height(16.dp))
-
-                    DropdownSelector(
-                        label = "Carrera",
-                        options = uiState.carreras,
-                        selected = uiState.carreraSeleccionada,
-                        onSelected = viewModel::onCarreraSelected
-                    )
-
-                    Spacer(Modifier.height(8.dp))
-
-                    DropdownSelector(
-                        label = "Periodo Académico",
-                        options = uiState.periodos,
-                        selected = uiState.periodoSeleccionado,
-                        onSelected = viewModel::onPeriodoSelected
-                    )
-
-                    Spacer(Modifier.height(24.dp))
-
-                    // 🔵 Encabezado tipo bloque para "Asignaturas"
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Asignaturas",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimary
+                        DropdownSelector(
+                            label = "Carrera",
+                            options = uiState.carreras,
+                            selected = uiState.carreraSeleccionada,
+                            onSelected = viewModel::onCarreraSelected
                         )
 
-                        Icon(
-                            imageVector = Icons.Default.List,
-                            contentDescription = "Icono de asignaturas",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                        Spacer(Modifier.height(8.dp))
+
+                        DropdownSelector(
+                            label = "Periodo Académico",
+                            options = uiState.periodos,
+                            selected = uiState.periodoSeleccionado,
+                            onSelected = viewModel::onPeriodoSelected
                         )
+
+                        Spacer(Modifier.height(24.dp))
+
+                        // 🔵 Encabezado tipo bloque para "Asignaturas"
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.primary)
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Asignaturas",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+
+                            Icon(
+                                imageVector = Icons.Default.List,
+                                contentDescription = "Icono de asignaturas",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                     }
                 }
-            }
 
-            items(uiState.asignaturas) { asignatura ->
-                AsignaturaCard(asignatura)
+                items(uiState.asignaturas) { asignatura ->
+                    AsignaturaCard(asignatura)
+                }
             }
         }
     }
-
-
-    /*Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    if (uiState.fotoUrl.isNotBlank()) {
-                        Image(
-                            painter = rememberAsyncImagePainter(uiState.fotoUrl),
-                            contentDescription = "Foto del alumno",
-                            modifier = Modifier
-                                .padding(start = 8.dp)
-                                .size(36.dp)
-                                .clip(CircleShape)
-                                .border(1.dp, Color.Gray, CircleShape)
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = "Icono de usuario",
-                            modifier = Modifier
-                                .padding(start = 8.dp)
-                                .size(36.dp)
-                                .clip(CircleShape)
-                                .border(1.dp, Color.Gray, CircleShape),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = "Asistencia",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                modifier = Modifier.height(56.dp)
-            )
-        }
-    ) { padding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            item(span = { GridItemSpan(2) }) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Spacer(Modifier.height(16.dp))
-
-
-
-                    DropdownSelector(
-                        label = "Curso",
-                        options = uiState.cursos,
-                        selected = uiState.cursoSeleccionado,
-                        onSelected = viewModel::onCursoSelected
-                    )
-
-                    Spacer(Modifier.height(8.dp))
-
-                    DropdownSelector(
-                        label = "Periodo Académico",
-                        options = uiState.periodos,
-                        selected = uiState.periodoSeleccionado,
-                        onSelected = viewModel::onPeriodoSelected
-                    )
-
-                    Spacer(Modifier.height(24.dp))
-
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Asignaturas",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-
-                        Icon(
-                            imageVector = Icons.Default.List, // Puedes cambiar el ícono
-                            contentDescription = "Icono de asignaturas",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                }
-            }
-
-            items(uiState.asignaturas) { asignatura ->
-                AsignaturaCard(asignatura)
-            }
-        }
-    }*/
 }
+
 

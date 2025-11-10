@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AsistenciaViewModel (
+class AsistenciaViewModel(
     private val getCarreraUseCase: GetCarreraUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AsistenciaUiState())
     val uiState: StateFlow<AsistenciaUiState> = _uiState
@@ -25,50 +25,29 @@ class AsistenciaViewModel (
     }
 
     private fun loadInitialData() {
-        Log.d("ViewModel","Entro a ViewModel")
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
-            Log.d("ViewModel","Entro a ViewModel antes de try-catch")
             try {
-                Log.d("ViewModel","Entro a ViewModel en try")
-                val carreras = getCarreraUseCase(23197).map { it.servNombre }
-                Log.d("AsistenciaViewModel", "Carreras: $carreras")
-                val cursos = listOf("1° Primaria", "2° Primaria", "3° Primaria")
-                val periodos = listOf("2025-I", "2025-II", "2026-I")
-                val asignaturas = listOf(
-                    Asignatura("Matemáticas", "Prof. García"),
-                    Asignatura("Ciencias", "Prof. López"),
-                    Asignatura("Lenguaje", "Prof. Torres"),
-                    Asignatura("Arte", "Prof. Díaz")
-                )
+                val carrerasList = getCarreraUseCase(23197)
 
                 _uiState.value = _uiState.value.copy(
-                    fotoUrl = "https://example.com/foto_alumno.jpg",
-                    cursos = cursos,
-                    cursoSeleccionado = cursos.first(),
-                    carreras = carreras,
-                    carreraSeleccionada = carreras.firstOrNull() ?: "",
-                    periodos = periodos,
-                    periodoSeleccionado = periodos.first(),
-                    asignaturas = asignaturas,
+                    carreras = carrerasList.map { it.servNombre },
+                    carreraSeleccionada = carrerasList.firstOrNull()?.servNombre.orEmpty(),
+                    fotoUrl = carrerasList.firstOrNull()?.pedUrlImagen.orEmpty(),
                     isLoading = false,
                     error = null
                 )
-            }catch (e: Exception) {
-                Log.d("ViewModel","Entro a ViewModel en catch",e)
+            } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = "Error al cargar carreras",
+                    error = "Error al cargar carreras: ${e.message}",
                     isLoading = false
                 )
             }
         }
     }
 
-    fun onCarreraSelected(carrera: String){
+    fun onCarreraSelected(carrera: String) {
         _uiState.value = _uiState.value.copy(carreraSeleccionada = carrera)
-    }
-    fun onCursoSelected(curso: String) {
-        _uiState.value = _uiState.value.copy(cursoSeleccionado = curso)
     }
 
     fun onPeriodoSelected(periodo: String) {

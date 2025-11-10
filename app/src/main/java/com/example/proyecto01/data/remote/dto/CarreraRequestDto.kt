@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @SuppressLint("UnsafeOptInUsageError")
 @Serializable
 data class CarreraRequestDto(
-    val id_estud: Int = 23197
+    val id_estud: Int
 )
