@@ -45,13 +45,148 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.List
+import com.example.proyecto01.presentation.asistencia.state.AsistenciaUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AsistenciaScreen(viewModel: AsistenciaViewModel) {
     val uiState by viewModel.uiState.collectAsState()
+    val asignaturasState by viewModel.asignaturasUiState.collectAsState()
+
     Log.d("AsistenciaScreen", "Entro al screen")
 
+    Scaffold { padding ->
+        when {
+            uiState.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            uiState.error != null -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = uiState.error ?: "Error desconocido")
+                }
+            }
+
+            else -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                ) {
+                    // 🔒 Encabezado fijo
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.primary)
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (uiState.fotoUrl.isNotBlank()) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(uiState.fotoUrl),
+                                    contentDescription = "Foto del alumno",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                        .border(1.dp, Color.Gray, CircleShape)
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Default.AccountCircle,
+                                    contentDescription = "Icono de usuario",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                        .border(1.dp, Color.Gray, CircleShape),
+                                    tint = MaterialTheme.colorScheme.onPrimary
+                                )
+                            }
+
+                            Spacer(Modifier.width(12.dp))
+
+                            Text(
+                                text = "Asistencia",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+
+                        Spacer(Modifier.height(12.dp))
+
+                        DropdownSelector(
+                            label = "Carrera",
+                            options = uiState.carreras,
+                            selected = uiState.carreraSeleccionada,
+                            optionLabel = { it.serv_nombre },
+                            onSelected = viewModel::onCarreraSelected
+                        )
+
+                        Spacer(Modifier.height(8.dp))
+
+                        DropdownSelector(
+                            label = "Periodo Académico",
+                            options = uiState.periodos,
+                            selected = uiState.periodoSeleccionado,
+                            optionLabel = { it.peracad_nombre },
+                            onSelected = viewModel::onPeriodoSelected
+                        )
+
+                        Spacer(Modifier.height(12.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.primary)
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Asignaturas",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+
+                            Icon(
+                                imageVector = Icons.Default.List,
+                                contentDescription = "Icono de asignaturas",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(12.dp))
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(1),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        contentPadding = PaddingValues(vertical = 16.dp)
+                    ) {
+                        items(asignaturasState.asignaturas) { asignatura ->
+                            AsignaturaCard(asignatura)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+/*
     Scaffold { padding ->
         if (uiState.isLoading) {
             Box(
@@ -126,6 +261,7 @@ fun AsistenciaScreen(viewModel: AsistenciaViewModel) {
                             label = "Carrera",
                             options = uiState.carreras,
                             selected = uiState.carreraSeleccionada,
+                            optionLabel = {it.serv_nombre},
                             onSelected = viewModel::onCarreraSelected
                         )
 
@@ -135,6 +271,7 @@ fun AsistenciaScreen(viewModel: AsistenciaViewModel) {
                             label = "Periodo Académico",
                             options = uiState.periodos,
                             selected = uiState.periodoSeleccionado,
+                            optionLabel = { it.peracad_nombre },
                             onSelected = viewModel::onPeriodoSelected
                         )
 
@@ -170,6 +307,6 @@ fun AsistenciaScreen(viewModel: AsistenciaViewModel) {
             }
         }
     }
+*/
+
 }
-
-

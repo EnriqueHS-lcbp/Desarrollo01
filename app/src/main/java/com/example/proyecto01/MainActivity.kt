@@ -15,8 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.proyecto01.data.remote.api.ApiService
 import com.example.proyecto01.data.remote.api.CarreraApi
 import com.example.proyecto01.data.repository.CarreraRepositoryImpl
+import com.example.proyecto01.data.repository.GeneralRepositoryImpl
+import com.example.proyecto01.domain.repository.GeneralRepository
+import com.example.proyecto01.domain.usecase.GeneralUseCase
 import com.example.proyecto01.domain.usecase.GetCarreraUseCase
 import com.example.proyecto01.presentation.asistencia.AsistenciaScreen
 import com.example.proyecto01.presentation.asistencia.AsistenciaViewModel
@@ -30,11 +34,17 @@ class MainActivity : ComponentActivity() {
             Proyecto01Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        val carreraApi = CarreraApi()
+                        /*val carreraApi = CarreraApi()
                         val carreraRepository = CarreraRepositoryImpl(carreraApi)
                         val getCarreraUseCase = GetCarreraUseCase(carreraRepository)
+*/
+                        val apiService = ApiService()
+                        val generalRepository = GeneralRepositoryImpl(apiService)
+                        val generalUseCase = GeneralUseCase(generalRepository)
+
                         val asistenciaViewModel = remember {
-                            AsistenciaViewModel(getCarreraUseCase)
+                            //AsistenciaViewModel(getCarreraUseCase)
+                            AsistenciaViewModel(generalUseCase)
                         }
 
                         AsistenciaScreen(viewModel = asistenciaViewModel)

@@ -14,7 +14,7 @@ class CarreraRepositoryImpl (
             val response = api.getCarreras(idEstud)
             println("CarreraReositoryImpl:{} "+ response)
             val lista = response.carrera ?: emptyList()
-            return lista.map { it.toDomain() }
+            return  emptyList() // lista.map { it.toDomain() }
             /*return response.carrera.map {
                 it.toDomain()
             }*/

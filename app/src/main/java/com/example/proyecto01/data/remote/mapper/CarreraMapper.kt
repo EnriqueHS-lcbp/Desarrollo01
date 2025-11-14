@@ -3,8 +3,8 @@ package com.example.proyecto01.data.remote.mapper
 import com.example.proyecto01.data.remote.dto.CarreraDto
 import com.example.proyecto01.domain.model.Carrera
 
-fun CarreraDto.toDomain(): Carrera {
-    return Carrera(
+fun CarreraDto.toDomain() /*: Carrera*/ {
+    /*return Carrera(
         pedUrlImagen = pedUrlImagen,
         idEstudPe = idEstudPe,
         idPestDet = idPestDet,
@@ -15,5 +15,5 @@ fun CarreraDto.toDomain(): Carrera {
         idUneg = idUneg,
         servNombre = servNombre,
         idEstud = idEstud
-    )
+    )*/
 }

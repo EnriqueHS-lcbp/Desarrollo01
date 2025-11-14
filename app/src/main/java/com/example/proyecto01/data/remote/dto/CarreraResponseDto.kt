@@ -8,22 +8,22 @@ import kotlinx.serialization.Serializable
 @SuppressLint("UnsafeOptInUsageError")
 @Serializable
 data class CarreraDto(
-    @SerialName("ped_url_imagen") val pedUrlImagen: String?,
-    @SerialName("id_estud_pe") val idEstudPe: Int,
-    @SerialName("id_pest_det") val idPestDet: String,
-    @SerialName("id_serv") val idServ: String,
-    @SerialName("flag_carrera") val flagCarrera: String,
-    @SerialName("id_estud_serv") val idEstudServ: String,
-    @SerialName("id_tiposerva") val idTipoServa: String,
-    @SerialName("id_uneg") val idUneg: String,
-    @SerialName("serv_nombre") val servNombre: String,
-    @SerialName("id_estud") val idEstud: String
+    val ped_url_imagen: String?,
+    val id_estud_pe: Int,
+    val id_pest_det: String,
+    val id_serv: String,
+    val flag_carrera: String,
+    val id_estud_serv: String,
+    val id_tiposerva: String,
+    val id_uneg: String,
+    val serv_nombre: String,
+    val id_estud: String
 
 );
 
 @SuppressLint("UnsafeOptInUsageError")
 @Serializable
 data class CarreraResponseDto(
-    @SerialName("flag_val") val flagVal: Int,
-    @SerialName("carrera") val carrera: List<CarreraDto>?= null
+    val flag_val: Int,
+    val carrera: List<CarreraDto>?= null
 )

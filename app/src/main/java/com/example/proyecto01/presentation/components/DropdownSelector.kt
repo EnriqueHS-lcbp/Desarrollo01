@@ -26,11 +26,12 @@ import androidx.compose.material3.TextField
 
 @ExperimentalMaterial3Api
 @Composable
-fun DropdownSelector(
+fun <T> DropdownSelector(
     label: String,
-    options: List<String>,
-    selected: String,
-    onSelected: (String) -> Unit
+    options: List<T>,
+    selected: T?,
+    optionLabel: (T) -> String,
+    onSelected: (T) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -39,7 +40,7 @@ fun DropdownSelector(
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = selected,
+            value = selected?.let(optionLabel) ?: "",
             onValueChange = {},
             readOnly = true,
             label = { Text(label) },
@@ -54,7 +55,7 @@ fun DropdownSelector(
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(optionLabel(option)) }, //{ Text(option) },
                     onClick = {
                         onSelected(option)
                         expanded = false
