@@ -1,5 +1,7 @@
 package com.example.proyecto01.domain.repository
 
+import com.example.proyecto01.data.remote.dto.AsignaturaAsisitenciaRequestDto
+import com.example.proyecto01.data.remote.dto.AsignaturaAsistenciaDto
 import com.example.proyecto01.data.remote.dto.AsignaturaDto
 import com.example.proyecto01.data.remote.dto.AsignaturaRequestDto
 import com.example.proyecto01.data.remote.dto.CarreraDto
@@ -15,4 +17,6 @@ interface GeneralRepository {
     suspend fun getPeriodos(request: PeriodoRequestDto) : List<PeriodoDto>
 
     suspend fun getAsignaturas(request: AsignaturaRequestDto): List<AsignaturaDto>
+
+    suspend fun getAsistenciaAsignatura(request: AsignaturaAsisitenciaRequestDto): List<AsignaturaAsistenciaDto>
 }

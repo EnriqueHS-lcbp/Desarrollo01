@@ -1,7 +1,10 @@
 package com.example.proyecto01.data.remote.api
 
+import com.example.proyecto01.data.remote.dto.AsignaturaAsisitenciaRequestDto
+import com.example.proyecto01.data.remote.dto.AsignaturaAsistenciaResponseDto
 import com.example.proyecto01.data.remote.dto.AsignaturaRequestDto
 import com.example.proyecto01.data.remote.dto.AsignaturasResponseDto
+import com.example.proyecto01.data.remote.dto.AsistenciaAsignaturaDto
 import com.example.proyecto01.data.remote.dto.CarreraRequestDto
 import com.example.proyecto01.data.remote.dto.CarreraResponseDto
 import com.example.proyecto01.data.remote.dto.PeriodoRequestDto
@@ -38,6 +41,15 @@ class ApiService (
     suspend fun getAsignaturas(request: AsignaturaRequestDto): AsignaturasResponseDto {
 
         return client.post("${baseUrl}estudianteAsignatura") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+    }
+
+    /** obtiene el horario de asistencia a las asignaturas **/
+    suspend fun getAsignaturaAsistencia(request: AsignaturaAsisitenciaRequestDto): AsignaturaAsistenciaResponseDto {
+
+        return client.post("${baseUrl}estudianteListadoCarrera") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()

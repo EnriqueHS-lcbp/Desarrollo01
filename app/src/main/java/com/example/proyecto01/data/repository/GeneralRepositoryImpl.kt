@@ -1,8 +1,11 @@
 package com.example.proyecto01.data.repository
 
 import com.example.proyecto01.data.remote.api.ApiService
+import com.example.proyecto01.data.remote.dto.AsignaturaAsisitenciaRequestDto
 import com.example.proyecto01.data.remote.dto.AsignaturaDto
 import com.example.proyecto01.data.remote.dto.AsignaturaRequestDto
+import com.example.proyecto01.data.remote.dto.AsignaturasResponseDto
+import com.example.proyecto01.data.remote.dto.AsignaturaAsistenciaDto
 import com.example.proyecto01.data.remote.dto.CarreraDto
 import com.example.proyecto01.data.remote.dto.CarreraRequestDto
 import com.example.proyecto01.data.remote.dto.PeriodoDto
@@ -32,4 +35,12 @@ class GeneralRepositoryImpl (
         println("GeneralRepositoryImpl:{} "+ response)
         return response.asignatura ?: emptyList()
     }
+
+    override suspend fun getAsistenciaAsignatura(request: AsignaturaAsisitenciaRequestDto): List<AsignaturaAsistenciaDto> {
+        val response = api.getAsignaturaAsistencia(request)
+        println("GeneralRepositoryImpl:{} "+ response)
+        return response.listadoCarrera ?: emptyList()
+    }
+
+
 }

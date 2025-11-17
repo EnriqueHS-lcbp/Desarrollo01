@@ -1,5 +1,8 @@
 package com.example.proyecto01.domain.usecase
 
+import com.example.proyecto01.data.remote.dto.AsignaturaAsisitenciaRequestDto
+import com.example.proyecto01.data.remote.dto.AsignaturaAsistenciaDto
+import com.example.proyecto01.data.remote.dto.AsignaturaAsistenciaResponseDto
 import com.example.proyecto01.data.remote.dto.AsignaturaDto
 import com.example.proyecto01.data.remote.dto.AsignaturaRequestDto
 import com.example.proyecto01.data.remote.dto.CarreraDto
@@ -23,5 +26,9 @@ class GeneralUseCase(
 
     suspend fun getAsignaturas(request: AsignaturaRequestDto): List<AsignaturaDto>{
         return repository.getAsignaturas(request)
+    }
+
+    suspend fun getAsignaturaAsistencia(request: AsignaturaAsisitenciaRequestDto): List<AsignaturaAsistenciaDto>{
+        return repository.getAsistenciaAsignatura(request)
     }
 }

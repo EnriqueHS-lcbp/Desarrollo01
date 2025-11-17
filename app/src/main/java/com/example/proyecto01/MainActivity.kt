@@ -24,12 +24,14 @@ import com.example.proyecto01.domain.usecase.GeneralUseCase
 import com.example.proyecto01.domain.usecase.GetCarreraUseCase
 import com.example.proyecto01.presentation.asistencia.AsistenciaScreen
 import com.example.proyecto01.presentation.asistencia.AsistenciaViewModel
+import com.example.proyecto01.presentation.navigation.AppNavigation
 import com.example.proyecto01.ui.theme.Proyecto01Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             Proyecto01Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -47,7 +49,12 @@ class MainActivity : ComponentActivity() {
                             AsistenciaViewModel(generalUseCase)
                         }
 
-                        AsistenciaScreen(viewModel = asistenciaViewModel)
+                        val idEstudiante: Int = 23197
+                        //AsistenciaScreen(idEstudiante,viewModel = asistenciaViewModel)
+                        AppNavigation(
+                            idEstudiante= idEstudiante,
+                            asistenciaViewModel = asistenciaViewModel
+                        )
                     //AsistenciaScreen()
                     }
                 }

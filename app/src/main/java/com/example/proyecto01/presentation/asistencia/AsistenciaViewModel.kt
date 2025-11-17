@@ -31,13 +31,14 @@ class AsistenciaViewModel(
     val uiState: StateFlow<AsistenciaUiState> = _uiState
     val asignaturasUiState: StateFlow<AsignaturasUiState> = _asignaturasUiState
 
-    init {
-        loadInitialData()
-    }
+    /*init {
+        //val request = CarreraRequestDto(id_estud = 2345)
+        loadInitialData(request)
+    }*/
 
-    private fun loadInitialData() {
+    fun loadInitialData(request: CarreraRequestDto) {
         viewModelScope.launch {
-            val request = CarreraRequestDto(id_estud = 23197)
+            //val request = CarreraRequestDto(id_estud = 23197)
             cargarCarreras(request)
             /*_uiState.value = _uiState.value.copy(isLoading = true)
             try {
