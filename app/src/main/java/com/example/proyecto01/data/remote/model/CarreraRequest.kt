@@ -1,10 +1,10 @@
-package com.example.proyecto01.data.remote.dto
+package com.example.proyecto01.data.remote.model
 
 import android.annotation.SuppressLint
 import kotlinx.serialization.Serializable
 
 @SuppressLint("UnsafeOptInUsageError")
 @Serializable
-data class PeriodoRequestDto(
-    val id_estud_serv: String
+data class CarreraRequest(
+    val id_estud: Int
 )

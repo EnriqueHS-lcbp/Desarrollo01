@@ -1,42 +1,39 @@
 package com.example.proyecto01.data.repository
 
 import com.example.proyecto01.data.remote.api.ApiService
-import com.example.proyecto01.data.remote.dto.AsignaturaAsisitenciaRequestDto
+import com.example.proyecto01.data.remote.model.AsignaturaAsisitenciaRequest
 import com.example.proyecto01.data.remote.dto.AsignaturaDto
-import com.example.proyecto01.data.remote.dto.AsignaturaRequestDto
-import com.example.proyecto01.data.remote.dto.AsignaturasResponseDto
+import com.example.proyecto01.data.remote.model.AsignaturaRequest
 import com.example.proyecto01.data.remote.dto.AsignaturaAsistenciaDto
 import com.example.proyecto01.data.remote.dto.CarreraDto
-import com.example.proyecto01.data.remote.dto.CarreraRequestDto
+import com.example.proyecto01.data.remote.model.CarreraRequest
 import com.example.proyecto01.data.remote.dto.PeriodoDto
-import com.example.proyecto01.data.remote.dto.PeriodoRequestDto
-import com.example.proyecto01.data.remote.mapper.toDomain
-import com.example.proyecto01.domain.model.Carrera
-import com.example.proyecto01.domain.repository.GeneralRepository
+import com.example.proyecto01.data.remote.model.PeriodoRequest
+import com.example.proyecto01.domain.repository.Repository
 
-class GeneralRepositoryImpl (
+class RepositoryImpl (
     private val api: ApiService
-)  : GeneralRepository {
-    override suspend fun getCarreras(request: CarreraRequestDto): List<CarreraDto> {
+)  : Repository {
+    override suspend fun getCarreras(request: CarreraRequest): List<CarreraDto> {
         val response = api.getCarreras(request)
         println("CarreraReositoryImpl:{} "+ response)
         return response.carrera ?: emptyList()
         //return lista.map { it.toDomain() }
     }
 
-    override suspend fun getPeriodos(request: PeriodoRequestDto): List<PeriodoDto> {
+    override suspend fun getPeriodos(request: PeriodoRequest): List<PeriodoDto> {
         val response = api.getPeriodos(request)
         println("GeneralRepositoryImpl:{} "+ response)
         return response.periodo ?: emptyList()
     }
 
-    override suspend fun getAsignaturas(request: AsignaturaRequestDto): List<AsignaturaDto> {
+    override suspend fun getAsignaturas(request: AsignaturaRequest): List<AsignaturaDto> {
         val response = api.getAsignaturas(request)
         println("GeneralRepositoryImpl:{} "+ response)
         return response.asignatura ?: emptyList()
     }
 
-    override suspend fun getAsistenciaAsignatura(request: AsignaturaAsisitenciaRequestDto): List<AsignaturaAsistenciaDto> {
+    override suspend fun getAsistenciaAsignatura(request: AsignaturaAsisitenciaRequest): List<AsignaturaAsistenciaDto> {
         val response = api.getAsignaturaAsistencia(request)
         println("GeneralRepositoryImpl:{} "+ response)
         return response.listadoCarrera ?: emptyList()

@@ -1,18 +1,14 @@
 package com.example.proyecto01.presentation.asistencia
 
-import android.util.Log
-import com.example.proyecto01.domain.model.Asignatura
-
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyecto01.data.remote.dto.AsignaturaRequestDto
+import com.example.proyecto01.data.remote.model.AsignaturaRequest
 import com.example.proyecto01.data.remote.dto.CarreraDto
-import com.example.proyecto01.data.remote.dto.CarreraRequestDto
+import com.example.proyecto01.data.remote.model.CarreraRequest
 import com.example.proyecto01.data.remote.dto.PeriodoDto
-import com.example.proyecto01.data.remote.dto.PeriodoRequestDto
+import com.example.proyecto01.data.remote.model.PeriodoRequest
 import com.example.proyecto01.domain.usecase.GeneralUseCase
-import com.example.proyecto01.domain.usecase.GetCarreraUseCase
 import com.example.proyecto01.presentation.asistencia.state.AsignaturasUiState
 import com.example.proyecto01.presentation.asistencia.state.AsistenciaUiState
 
@@ -36,33 +32,11 @@ class AsistenciaViewModel(
         loadInitialData(request)
     }*/
 
-    fun loadInitialData(request: CarreraRequestDto) {
+    fun loadInitialData(request: CarreraRequest) {
         viewModelScope.launch {
             //val request = CarreraRequestDto(id_estud = 23197)
             cargarCarreras(request)
-            /*_uiState.value = _uiState.value.copy(isLoading = true)
-            try {
-                //val carrerasList = getCarreraUseCase(23197)
-                val carrerasList = useCase.getCarreras(23197)
-                val periodosList = useCase.getPeriodos(23197)
 
-                _uiState.value = _uiState.value.copy(
-                    carreras = carrerasList, //map { it.servNombre },
-                    carreraSeleccionada = carrerasList.firstOrNull(), //?.servNombre.orEmpty(),
-                    fotoUrl = carrerasList.firstOrNull()?.pedUrlImagen.orEmpty(),
-                    periodos = periodosList, //.map { it.peracad_nombre },
-                    periodoSeleccionado = periodosList.firstOrNull(), //?.peracad_nombre.orEmpty(),
-                    isLoading = false,
-                    error = null
-                )
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Error al cargar carreras: ${e.message}",
-                    isLoading = false
-
-                )
-                System.out.println("Error al cargar carreras: ${e.message}")
-            }*/
         }
     }
 
@@ -75,7 +49,7 @@ class AsistenciaViewModel(
 
         val estudianteId = _uiState.value.carreraSeleccionada?.id_estud_pe ?: 0
         val periodoId = periodo.id_peracad
-        val request = AsignaturaRequestDto(
+        val request = AsignaturaRequest(
             id_estud_pe = estudianteId,
             id_peracad = periodoId
         )
@@ -84,7 +58,7 @@ class AsistenciaViewModel(
 
     }
 
-    fun cargarCarreras(request: CarreraRequestDto) {
+    fun cargarCarreras(request: CarreraRequest) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
@@ -101,7 +75,7 @@ class AsistenciaViewModel(
                 )
 
                 carreraSeleccionada?.let {
-                    val request = PeriodoRequestDto(id_estud_serv = it.id_estud_serv)
+                    val request = PeriodoRequest(id_estud_serv = it.id_estud_serv)
                     cargarPeriodos(request)
                 }
 
@@ -116,7 +90,7 @@ class AsistenciaViewModel(
         }
     }
 
-    fun cargarPeriodos(request: PeriodoRequestDto) {
+    fun cargarPeriodos(request: PeriodoRequest) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
@@ -132,7 +106,7 @@ class AsistenciaViewModel(
 
                 periodoSeleccionado?.let{
                     val dd = it.id_estud_pe.toInt()
-                    val request = AsignaturaRequestDto(
+                    val request = AsignaturaRequest(
                         id_estud_pe = dd ,
                         id_peracad = it.id_peracad
                     )
@@ -151,7 +125,7 @@ class AsistenciaViewModel(
         }
     }
 
-    fun cargarAsignaturas(request: AsignaturaRequestDto) {
+    fun cargarAsignaturas(request: AsignaturaRequest) {
         System.out.println("AQUI EN CARGAR ASIGNATURAS")
         viewModelScope.launch {
             _asignaturasUiState.value = _asignaturasUiState.value.copy(isLoading = true)
